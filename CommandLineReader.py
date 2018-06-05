@@ -1,6 +1,10 @@
-topic = "jakepic/messenger"
-
 import paho.mqtt.client as mqtt
+import sys
+
+if len(sys.argv) == 1:
+    topic = "PyChat/Default/default"
+else:
+    topic = sys.argv[1]
 
 
 def on_connect(client, userdata, flags, rc):

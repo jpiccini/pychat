@@ -1,6 +1,8 @@
-# Messenger
+# PyChat
 
-[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+PyChat is a chat room application that uses Mosquitto's test server (test.mosquitto.org) as a broker to send messages
+between two or more computers. The UI is built using Tkinter.
+
 
 Developed by Jake Piccini
 
@@ -8,80 +10,98 @@ j.piccini@icloud.com
 
 
 ## Table of Contents
-* [Project Description](#project-description)
-* [Features](#features)
 * [Requirements](#requirements)
-* [Execution](#execution)
-
-
-## Project Description
-* Messenger is an application that uses Mosquitto's test server (test.mosquitto.org) as a broker to send messages between two or more computers.
-
-
-## Features
-* Name: You can set what name is displayed with your messages
-* Color: You can change the color that your messages are displayed in
-* Menubar: Allows you to open this README file as well as an About window
-* Resizable: You can drag from a corner to make the window bigger
-* Command Line Reader: A separate Python file to be run along Messenger that allows you to see the raw data from the chat
+* [Run](#run)
+* [Features](#features)
+    * [Chat Room](#chat-room)
+    * [Channel](#channel)
+    * [Display Name and Color](#display-name-and-color)
+    * [Messaging](#messaging)
+    * [Menu Bar](#menu-bar)
+    * [Command Line Reader](#command-line-reader)
+* [Troubleshooting](#troubleshooting)
+* [Version History](#version-history)
 
 
 ## Requirements
 * An internet connection
-* Mosquitto (follow instructions to install)
-  * Mac:
-    * in Terminal, run `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
-    * in Terminal, run `brew install mosquitto`
-    * in Terminal, run `$ /usr/local/sbin/mosquitto -c /usr/local/etc/mosquitto/mosquitto.conf`
-  * PC:
-    * from the folder containing the messenger app, open 'Windows Mosquitto'
-    * copy the folder 'mosquitto' to C:/Program Files (x86)
+* Python 2.7
+* Mosquitto
+  * Install on Mac:
+    * `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+    * `brew install mosquitto`
+    * `$ /usr/local/sbin/mosquitto -c /usr/local/etc/mosquitto/mosquitto.conf`
+  * Install on PC:
+    * Copy `mosquito` directory from `MyChat/Windows Mosquitto/` to `C:/Program Files (x86)` 
+
+## Run
+Within the `PyChat` directory, run `python PyChat.py`.
 
 
-## Execution
-* Mac:
-  * Open the file 'Messenger.py' using your Python Editor (ex. IDLE, PyCharm)
-  * Run the program (F5)
-* PC:
-  * Double click the 'Messenger.py' file
+## Features
+#### Chat Room
+
+_Join a room with others to send messages._
+
+When launching the application, the room is `default`. 
+To change this, enter a new room name in the `Room` box and click `Set Room`.
+
+#### Channel
+
+_Customize access to you rooms._
+
+All chat rooms exist within a channel. The default channel is `PyChat/Default/`.
+You can change this by editing the `channel` variable within `PyChat.py`.
+
+#### Display Name and Color
+
+_Set the name and color that is shown with your messages._
+
+Beneath the message window, you can set the name you want to appear with your messages.
+You can also select what color you would like your messages to be through the `Color` dropdown menu. 
+Changing these will not change past messages.
+
+#### Messaging
+
+_Send messages to people in the same chat room._
+
+To send a message, you must first enter a display name and select a color. 
+Then, type your message in the box next to the `Send` button. 
+To send the message, press the `Send` button or the `Enter/Return` key on your keyboard.
 
 
-## To view/edit the code
-* Mac:
-  *Open the file 'Messenger.py' using your Python Editor (ex. IDLE, PyCharm)
-* PC:
-  * Right click the 'Messenger.py' file and select 'Edit with IDLE'
+#### Menu Bar
+
+_Get help within the application._
+
+From the menu bar, you can open this README, see an About window, and quit the application.
+
+#### Command Line Reader
+
+_View raw data from a chat room._
+
+To run the Command Line Reader, run `python CommandLineReader [channel/room]` where channel is
+the channel you wish to use, and room is the room you wish to view. 
+If no argument is given, the default is `PyChat/Default/default`
 
 
-## To run Command Line Reader
-* Mac:
-  * Open the file 'Command Line Reader.py' using IDLE
-  * In the title bar, you will find the pathway for the file
-  * In Terminal, type 'python ' followed by the pathway after your user directory, inserting a '\' before every space
-    * Ex: The pathway is '/Users/bob/Documents/Messenger/Command Line Reader.py' 
-            Type 'python Documents/Messenger/Command\ Line\ Reader.py' into Terminal
-* PC:
-  * Double click the 'Command Line Reader.py' file
+## Troubleshooting
+| Problem | Solution |
+| :---: | :---: |
+| The application will not work if you are not connected to the internet | Connect to the internet |
+| Your message won't send if the string of `#!?#@@!` is anywhere in the message or name | Remove `#!?#@@!` from your name or message
+| If you are using Python 3, the application won't work properly | Use Python 2.7
+  
+## Version History
+> **1.0.0** _June 5, 2018_
+>
+> * Ability to change room from application
+> * Refactor code to be neater
+> * Command Line Reader takes a command line argument for room to view
+> * Make README into markdown
 
-
-## To send a message
-* Enter the name you want to be displayed with your message into the Name Box
-* Select the color you want the message to be displayed in from the Color Dropdown Menu
-* Type your message into the long box under the Message Window (displaying 'You have joined a chat with the topic...’)
-* Press 'Send' or the Enter/Return key on your keyboard
-
-
-## Make a unique chatroom
-* The default topic is 'jakepic/messenge'
-* To make a different room, edit the 'topic' string variable in the first line of code in 'Messenger.py'
-* Ensure that all computers wanting to connect to this chatroom have changed it to the same thing
-* If you want to use the Command Line Reader, change the ‘topic' string variable in the first line of code in 'Command Line Reader.py' as well
-
-
-## Possible errors
-* If you are not connect to the internet, the app will not work
-  * FIX: Connect to the internet
-* If the string of "#!?#@@!" is anywhere in the message or name, it will not allow you to send the message
-  * FIX: Remove "#!?#@@!" from your name or message
-* If you are using Python 3 versus Python 2.7, Tkinter won’t import properly 
-  * FIX: In line 3, change 'Tkinter' to 'tkinter', and change line 5 to 'from tkinter import ttk' 
+> **0.0.0** _September 13, 2015_
+>
+> * First beta version of application
+> * Support for custom name and color
+> * Hardcoded chat room
