@@ -31,7 +31,7 @@ class PyChat:
         self.current_room.set(self.channel + self.room.get())
         self.app.title("PyChat - Room: %s" % (self.room.get()))
 
-        # Start Mosquito #
+        # Start Mosquitto #
         self.client = mqtt.Client()
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
@@ -171,9 +171,9 @@ class PyChat:
 
         content_frame = Listbox(read_me, height=30, width=130, font=tkFont.Font(font="Courier"))
         content_frame.grid(column=1, row=1)
-        scroll2 = ttk.Scrollbar(read_me, orient=VERTICAL, command=content_frame.yview)
-        scroll2.grid(column=2, row=1, sticky=(N, S, W))
-        content_frame['yscrollcommand'] = scroll2.set
+        scroll = ttk.Scrollbar(read_me, orient=VERTICAL, command=content_frame.yview)
+        scroll.grid(column=2, row=1, sticky=(N, S, W))
+        content_frame['yscrollcommand'] = scroll.set
 
         f = open('README.md')
         for line in f:
