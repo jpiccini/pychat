@@ -1,5 +1,6 @@
 from Tkinter import *
-import ttk, tkFont
+import ttk
+import tkFont
 import paho.mqtt.publish as publish
 import paho.mqtt.client as mqtt
 
@@ -30,7 +31,6 @@ class PyChat:
         self.current_room.set(self.channel + self.room.get())
         self.app.title("PyChat - Room: %s" % (self.room.get()))
 
-
         # Start Mosquito #
         self.client = mqtt.Client()
         self.client.on_connect = self.on_connect
@@ -60,7 +60,6 @@ class PyChat:
         self.message_entry.bind("<Return>", self.send)
         self.sendButt = ttk.Button(self.window, text="Send", command=self.send)
         self.sendButt.grid(column=4, row=3, columnspan=2, sticky=(W, E))
-
         ttk.Separator(self.window, orient=HORIZONTAL).grid(column=1, row=4, columnspan=5, pady=10, sticky=(W, E))
 
         # Name Entry #
@@ -76,24 +75,24 @@ class PyChat:
         self.color['values'] = ('Black', 'Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Purple', 'Brown')
         self.color.grid(column=4, row=5, sticky=(W, E))
         self.color.set("Black")
-        self.colorDic = {'Black': 'black', 'Red': 'crimson', 'Orange': 'darkorange', 'Yellow': 'gold', 'Green': 'olivedrab',
-                    'Blue': 'mediumblue', 'Purple': 'darkmagenta', 'Brown': 'saddlebrown'}
+        self.colorDic = {'Black': 'black', 'Red': 'crimson', 'Orange': 'darkorange', 'Yellow': 'gold',
+                         'Green': 'olivedrab', 'Blue': 'mediumblue', 'Purple': 'darkmagenta', 'Brown': 'saddlebrown'}
 
         # Create Menu #
-        self.menubar = Menu(self.app)
+        self.menu_bar = Menu(self.app)
 
-        self.filemenu = Menu(self.menubar)
-        self.filemenu.add_command(label='Open README', command=self.readme)
-        self.filemenu.add_command(label='About', command=self.about)
-        self.filemenu.add_separator()
-        self.filemenu.add_command(label='Quit', command=self.app.destroy)
-        self.menubar.add_cascade(label='File', menu=self.filemenu)
+        self.file_menu = Menu(self.menu_bar)
+        self.file_menu.add_command(label='Open README', command=self.readme)
+        self.file_menu.add_command(label='About', command=self.about)
+        self.file_menu.add_separator()
+        self.file_menu.add_command(label='Quit', command=self.app.destroy)
+        self.menu_bar.add_cascade(label='File', menu=self.file_menu)
 
-        self.helpmenu = Menu(self.menubar)
+        self.helpmenu = Menu(self.menu_bar)
         self.helpmenu.add_command(label='Open README', command=self.readme)
-        self.menubar.add_cascade(label='Help', menu=self.helpmenu)
+        self.menu_bar.add_cascade(label='Help', menu=self.helpmenu)
 
-        self.app.config(menu=self.menubar)
+        self.app.config(menu=self.menu_bar)
 
         # Resize Window #
         self.app.minsize(width=400, height=300)
@@ -113,12 +112,10 @@ class PyChat:
     def on_connect(self, client, userdata, flags, rc):
         self.set_room()
 
-
     # Receive Function #
     def on_message(self, client, userdata, msg):
         Message, Name, Color = str(msg.payload).split('#!?#@@!')
         self.print_message(Name + ': ' + Message, self.colorDic[Color])
-
 
     # Send Function #
     def send(self, binding_event=None):
@@ -135,14 +132,12 @@ class PyChat:
         elif not self.message.get():
             self.print_message("Please enter a message.", "darkgrey")
 
-
     # Print Message to Window #
     def print_message(self, message, color):
         self.mWindow.insert('end', message)
         num = self.mWindow.size() - 1
         self.mWindow.itemconfig(num, foreground=color)
         self.mWindow.see(END)
-
 
     # Change Chat Room #
     def set_room(self, binding_event=None):
@@ -154,37 +149,35 @@ class PyChat:
         self.print_message("You have joined the chat room '%s'" % (self.room.get()), "darkgrey")
         self.app.title("PyChat - Room: %s" % (self.room.get()))
 
-
     # Menu Commands #
     def about(self):
-        AboutMe = Toplevel(self.app)
-        AboutMe.title('About')
-        AboutMe.resizable(width=FALSE, height=FALSE)
+        about_me = Toplevel(self.app)
+        about_me.title('About')
+        about_me.resizable(width=FALSE, height=FALSE)
 
-        aboutWindow = Listbox(AboutMe, height=6, width=45)
-        aboutWindow.grid(column=1, row=1)
-        aboutText = ['PyChat Version 1.0.0', 'Developed by Jake Piccini','',
-                     'Current Channel: %s' % (self.channel),
-                     'Current Room: %s' % (self.room.get())]
+        content_window = Listbox(about_me, height=6, width=45)
+        content_window.grid(column=1, row=1)
+        about_text = ['PyChat Version 1.0.0', 'Developed by Jake Piccini', '',
+                     'Current Channel: %s' % self.channel,
+                     'Current Room: %s' % self.room.get()]
 
-        for line in aboutText:
-            aboutWindow.insert('end', line)
-
+        for line in about_text:
+            content_window.insert('end', line)
 
     def readme(self):
-        ReadMe = Toplevel(self.app)
-        ReadMe.title('README')
-        ReadMe.resizable(width=FALSE, height=FALSE)
+        read_me = Toplevel(self.app)
+        read_me.title('README')
+        read_me.resizable(width=FALSE, height=FALSE)
 
-        readWindow = Listbox(ReadMe, height=30, width=130, font=tkFont.Font(font="Courier"))
-        readWindow.grid(column=1, row=1)
-        scroll2 = ttk.Scrollbar(ReadMe, orient=VERTICAL, command=readWindow.yview)
+        content_frame = Listbox(read_me, height=30, width=130, font=tkFont.Font(font="Courier"))
+        content_frame.grid(column=1, row=1)
+        scroll2 = ttk.Scrollbar(read_me, orient=VERTICAL, command=content_frame.yview)
         scroll2.grid(column=2, row=1, sticky=(N, S, W))
-        readWindow['yscrollcommand'] = scroll2.set
+        content_frame['yscrollcommand'] = scroll2.set
 
         f = open('README.md')
         for line in f:
-            readWindow.insert('end', line.strip('\n'))
+            content_frame.insert('end', line.strip('\n'))
 
 
 if __name__ == "__main__":
