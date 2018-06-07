@@ -93,6 +93,10 @@ If no argument is given, the default is `PyChat/Default/default`
 
 ## Version History
 
+> **1.1.0** _June 7, 2018_
+>
+> * Refactor app to be contained in a class
+
 > **1.0.0** _June 5, 2018_
 >
 > * Ability to change room from application
